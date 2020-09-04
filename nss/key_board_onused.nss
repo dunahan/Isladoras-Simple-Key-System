@@ -3,29 +3,20 @@ string s = "key_board_onused: ";
 
 void main()
 {
-  object oKeyBoard = OBJECT_SELF;                                               //DebugMode(s+GetName(oKeyBoard));
-
-  object oObject = GetFirstObjectInArea();                                      //DebugMode(s+GetName(oObject));
-  string sDoorsWithKeys;                                                        //DebugMode(s+sDoorsWithKeys);
+  object oKeyBoard = OBJECT_SELF;                                               DebugMode(s+GetName(oKeyBoard));
+  string sDoorsWithKeys;
 
   if (GetLocalInt(oKeyBoard, KEYSYS_DOORLINI) == TRUE)
-  {
-    ActionStartConversation(GetLastUsedBy());                                   //DebugMode(s+"Is Init done? "+GetLocalString(oKeyBoard, KEYSYS_DOORLINI));
-  }
+    ActionStartConversation(GetLastUsedBy());
 
   else
   {
-    while (GetIsObjectValid(oObject))
-    {
-      if (GetObjectType(oObject) == OBJECT_TYPE_DOOR && GetLockKeyTag(oObject) != "")
-        sDoorsWithKeys = AddTokenToString(GetLockKeyTag(oObject), sDoorsWithKeys);  //DebugMode(s+sDoorsWithKeys);
-      oObject = GetNextObjectInArea();                                          //DebugMode(s+GetName(oObject));
-    }
+    sDoorsWithKeys = CreateKeyList(GetArea(oKeyBoard));                         DebugMode(s+sDoorsWithKeys);
 
-    SetLocalInt(oKeyBoard, KEYSYS_DOORLINI, TRUE);                              //DebugMode(s+"Init done!");
-    SetLocalString(oKeyBoard, KEYSYS_DOORKEYS, sDoorsWithKeys);                 //DebugMode(s+"Save Doors to local string.\n"+GetLocalString(oKeyBoard, KEYSYS_DOORKEYS));
+    SetLocalInt(oKeyBoard, KEYSYS_DOORLINI, TRUE);                              DebugMode(s+"Init done!");
+    SetLocalString(oKeyBoard, KEYSYS_DOORKEYS, sDoorsWithKeys);                 DebugMode(s+"Save Doors to local string.\n"+GetLocalString(oKeyBoard, KEYSYS_DOORKEYS));
     SetLocalString(oKeyBoard, KEYSYS_DOORKEYS+"_ORG", sDoorsWithKeys);
-    SetDescription(oKeyBoard, sDoorsWithKeys, TRUE);                            //DebugMode(s+"Save it to description for Debug.");
+    SetDescription(oKeyBoard, sDoorsWithKeys, TRUE);                            DebugMode(s+"Save it to description for Debug.");
 
     ActionStartConversation(GetLastUsedBy());
   }

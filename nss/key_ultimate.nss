@@ -11,19 +11,21 @@ void main()
   if (nObjType != OBJECT_TYPE_DOOR)             // Abort the script if target is anything else then a door
     return;
 
-    sNewTag = GetLockKeyTag(oTarget);           // Get the tag of the key, that opens the door
+  sNewTag = GetLockKeyTag(oTarget);             // Get the tag of the key, that opens the door
 
-    if (sNewTag != "")
-    {
-      // Create one similar key and rename it to the target area
-      oNewKey = CreateItemOnObject(KEYSYS_TEMPLATE, oUser, 1, sNewTag);
-      SetName(oNewKey, GetName(GetArea(GetTransitionTarget(oTarget))));
-    }
+  if (sNewTag != "")
+  {
+    // Create one similar key and rename it to the target area
+    oNewKey = CreateItemOnObject(KEYSYS_TEMPLATE, oUser, 1, sNewTag);
+    if (GetName(GetArea(GetTransitionTarget(oTarget))) == "")
+      SetName(oNewKey, GetName(GetDoorByKeyTag(sNewTag, GetArea(oTarget))));
     else
-      SendServerMessageToPC(oUser, "DM:  Es gibt kein Ziel um einen Schluessel zu generieren.");
+      SetName(oNewKey, GetName(GetArea(GetTransitionTarget(oTarget))));
+  }
+  else
+    SendServerMessageToPC(oUser, KEYSYS_ERROR001);
 
-    DebugMode("Keylock-Target: "+GetName(oTarget)+"\nKey: "+GetLockKeyTag(oTarget)+
-              "\nLocation: "+GetName(GetArea(GetTransitionTarget(oTarget))));
+    DebugMode("Keylock-Target: "+GetName(oTarget)+"\nKey: "+GetLockKeyTag(oTarget)+"\nLocation: "+GetName(GetArea(GetTransitionTarget(oTarget))));
 
     // Remove all item properties so make it unique
     IPRemoveAllItemProperties(oNewKey, DURATION_TYPE_PERMANENT);

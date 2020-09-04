@@ -1,7 +1,7 @@
 void DebugMode(string sDebug);
 void DebugMode(string sDebug)
 {
-  int DEBUG_MODE = TRUE; //GetLocalInt(GetModule(), "DEBUG_MODE");
+  int DEBUG_MODE = GetLocalInt(GetModule(), "DEBUG_MODE");
 
        if (DEBUG_MODE == TRUE)
     SpeakString(sDebug, TALKVOLUME_SHOUT);
