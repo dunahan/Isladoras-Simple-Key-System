@@ -1,15 +1,18 @@
 #include "_key_include"
 string s = "key_dlg_oaw005: ";
+int n = 504;
 
 int StartingConditional()
 {
   object oKeyBoard = OBJECT_SELF;
-  string sDoorsWithKeys = GetLocalString(oKeyBoard, KEYSYS_DOORKEYS);
-  int i, t = GetTokenCount(sDoorsWithKeys);
+  string sDoorsWithKeys = GetLocalString(oKeyBoard, KEYSYS_DOORKEYS), sKeyTag = GetLocalString(oKeyBoard, IntToString(n));
+  string sDoor = GetName(GetDoorByKeyTag(sKeyTag, GetArea(oKeyBoard)));
+  int i, t = GetTokenCount(sDoorsWithKeys), nFee = CalcFee(GetItemPossessedBy(GetPCSpeaker(), sKeyTag), GetPCSpeaker());
 
-  if (GetIsObjectValid(GetItemPossessedBy(GetPCSpeaker(), GetLocalString(oKeyBoard, IntToString(504)))))
+  if (GetIsObjectValid(GetItemPossessedBy(GetPCSpeaker(), sKeyTag)))
   {
-    SetCustomToken(504, "Add "+StringReplace(GetLocalString(oKeyBoard, IntToString(504)), "_", " "));
+    //SetCustomToken(n, KEYSYS_BOARD004 + StringReplace(sKeyTag, "_", " "));
+    SetCustomToken(n, KEYSYS_BOARD004 + sDoor+" ("+IntToString(nFee)+" Gold)");
     return TRUE;
   }
 
@@ -18,7 +21,7 @@ int StartingConditional()
 
   for (i = 1; i <= t; i++)
   {
-    if (FindSubString(sDoorsWithKeys, GetLocalString(oKeyBoard, IntToString(504))) == -1)
+    if (FindSubString(sDoorsWithKeys, sKeyTag) == -1)
       return FALSE;
   }
 

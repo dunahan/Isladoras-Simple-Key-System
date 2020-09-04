@@ -157,11 +157,9 @@ void DeleteStringFromTokenCache(string sTargetString)
   int i, nSize = GetLocalInt(oCache,"#C#"+sTargetString);
   string sToken;
 
-  //DebugMode("Delete TokenString '"+sToken+"' from Cache");
   for(i=1;i<=nSize;i++)
   {
     sToken = GetLocalString(oCache,"#C#"+sTargetString+IntToString(i));
-    DebugMode("Delete '"+sToken+"' from Cache");
     DeleteLocalInt(oCache,"#C#"+sTargetString+sToken);
     DeleteLocalString(oCache,"#C#"+sTargetString+IntToString(i));
   }
